@@ -1,0 +1,34 @@
+.buttonBlock {
+    padding: 12px;
+    border: 1px solid #958dec;
+    background-color: #b19bac;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.buttonBlock:hover {
+    background-color: #45a049;
+}
+
+.buttonBlock:active {
+    background-color: #39843c;
+}
+
+.imgBlock {
+    width: 24px;
+    height: 24px;
+}
+
+.blockContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.blockButtons {
+    display: flex;
+    gap: 20px;
+}

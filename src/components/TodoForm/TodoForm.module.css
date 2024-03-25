@@ -1,0 +1,43 @@
+.inputContainer {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.inputField {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 18px;
+    transition: border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.inputField:hover {
+    border-color: #770707;
+}
+
+.inputField:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.inputButton {
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #958dec;
+    color: #fff;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.inputButton:hover {
+    background-color: #45a049;
+}
+
+.inputButton:active {
+    background-color: #39843c;
+}
