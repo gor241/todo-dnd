@@ -1,0 +1,81 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 15px;
+    width: 500px;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.completed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 15px;
+    width: 500px;
+    background-color: #8881d7;
+    color: burlywood;
+    border-radius: 4px;
+}
+
+img {
+    max-width: 25px;
+    max-height: 25px;
+}
+
+p {
+    font-size: 20px;
+    font-weight: bold;
+    flex: 1 1 auto;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+button:hover {
+    transform: scale(1.2);
+}
+
+.basket {
+    max-width: 25px;
+    max-height: 25px;
+    transition: fill 0.5s ease;
+}
+
+.basket:hover {
+    fill: #ff0000;
+}
+
+.basket:active {
+    fill: blue;
+}
+
+.complete {
+    max-width: 25px;
+    max-height: 25px;
+}
+
+.complete .polyline {
+    fill: none;
+    stroke: #000000;
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-miterlimit: 10;
+    transition: stroke 0.5s ease;
+}
+
+.complete:hover .polyline {
+    stroke: green;
+}
+
+.complete:active .polyline {
+    stroke: blue;
+}
