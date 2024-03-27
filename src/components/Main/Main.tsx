@@ -16,13 +16,18 @@ export default function Main() {
 
     function filterTodos(todo: string | string[]) {
         if (Array.isArray(todo)) {
-            console.log(todoList);
-
-            setTodoList(Array.from(new Set(...todoList, ...todo)));
-            console.log(todoList);
+            setTodoList((prevTodoList) => {
+                let filteredList = prevTodoList;
+                for (let i = 0; i < todo.length; i++) {
+                    filteredList = filteredList.filter((el) => el !== todo[i]);
+                }
+                return filteredList;
+            });
         } else {
-            const filtred = todoList.filter((el) => el !== todo);
-            setTodoList(filtred);
+            setTodoList((prevTodoList) => {
+                const filteredList = prevTodoList.filter((el) => el !== todo);
+                return filteredList;
+            });
         }
     }
 

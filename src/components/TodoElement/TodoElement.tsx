@@ -27,7 +27,7 @@ export const TodoElement: React.FC<TodoElementProps> = ({
         <div className={!todoComplete ? styles.container : styles.completed}>
             <img src={titleIcon} alt="icon" />
             <p>{data}</p>
-            <button onClick={deleteTodo}>
+            <button title="deleteTodo" onClick={deleteTodo}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 30 30"
@@ -77,7 +77,7 @@ export const TodoElement: React.FC<TodoElementProps> = ({
                     />
                 </svg>
             </button>
-            <button onClick={completeTodo}>
+            <button title="completeTodo" onClick={completeTodo}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 50 50"

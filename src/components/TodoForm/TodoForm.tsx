@@ -30,7 +30,11 @@ const TodoForm: React.FC<TodoFormProps> = ({ addTodoList }) => {
                 />
             </div>
             <div>
-                <button className={styles.inputButton} onClick={handleSubmit}>
+                <button
+                    title="Add todo"
+                    className={styles.inputButton}
+                    onClick={handleSubmit}
+                >
                     Submit
                 </button>
             </div>

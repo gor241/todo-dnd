@@ -25,19 +25,23 @@ const TodoBlock: React.FC<TodoBlockProps> = ({
     }
 
     function addCompletedTodo(todo: string) {
-        const filtred = yourComplete.includes(todo)
-            ? yourComplete.filter((el) => el !== todo)
-            : [...yourComplete, todo];
-        console.log(yourComplete);
-        setYourComplete(filtred);
+        setYourComplete((prevState) => {
+            const isTodoExists = prevState.includes(todo);
+            if (isTodoExists) {
+                return prevState.filter((el) => el !== todo);
+            } else {
+                return [...prevState, todo];
+            }
+        });
     }
 
     return (
         <div className={styles.blockContainer}>
             <div className={styles.blockButtons}>
                 <button
-                    onClick={deleteCompleted}
+                    onClick={() => deleteCompleted()}
                     className={styles.buttonBlock}
+                    title="deleteCompleted"
                 >
                     <img
                         className={styles.imgBlock}
@@ -45,7 +49,11 @@ const TodoBlock: React.FC<TodoBlockProps> = ({
                         alt="Корзина"
                     />
                 </button>
-                <button onClick={deleteAllTodo} className={styles.buttonBlock}>
+                <button
+                    title="deleteAllTodo"
+                    onClick={deleteAllTodo}
+                    className={styles.buttonBlock}
+                >
                     <img
                         className={styles.imgBlock}
                         src={updateIcon}
