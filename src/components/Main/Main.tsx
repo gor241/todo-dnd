@@ -1,48 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import TodoForm from '../TodoForm/TodoForm';
 import styles from './Main.module.css';
 import TodoBlock from '../TodoBlock/TodoBlock';
+import { RootState } from '../../store/store';
 
-export default function Main() {
-    const [todoList, setTodoList] = useState<string[]>([]);
-
-    function addTodoList(params: string) {
-        setTodoList([...todoList, params]);
-    }
-
-    function deleteAllTodo() {
-        setTodoList([]);
-    }
-
-    function filterTodos(todo: string | string[]) {
-        if (Array.isArray(todo)) {
-            setTodoList((prevTodoList) => {
-                let filteredList = prevTodoList;
-                for (let i = 0; i < todo.length; i++) {
-                    filteredList = filteredList.filter((el) => el !== todo[i]);
-                }
-                return filteredList;
-            });
-        } else {
-            setTodoList((prevTodoList) => {
-                const filteredList = prevTodoList.filter((el) => el !== todo);
-                return filteredList;
-            });
-        }
-    }
+const Main: React.FC = () => {
+    const todoList = useSelector(
+        (state: RootState) => state.sliceName.todoList
+    );
 
     return (
         <div className={styles.container}>
-            <TodoForm addTodoList={addTodoList} />
+            <TodoForm />
             {todoList.length === 0 ? (
                 <p className={styles.paragraphStyle}>Todo list is empty</p>
             ) : (
-                <TodoBlock
-                    todoList={todoList}
-                    deleteAllTodo={deleteAllTodo}
-                    filterTodos={filterTodos}
-                />
+                <TodoBlock />
             )}
         </div>
     );
-}
+};
+
+export default Main;
