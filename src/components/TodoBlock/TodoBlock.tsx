@@ -1,45 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './TodoBlock.module.css';
 import basketIcon from './basket.svg';
 import updateIcon from './update.svg';
 import { TodoElement } from '../TodoElement/TodoElement';
-
-interface TodoBlockProps {
-    todoList: string[];
-    deleteAllTodo: () => void;
-    filterTodos: (todo: string | string[]) => void;
-}
-
-const TodoBlock: React.FC<TodoBlockProps> = ({
-    todoList,
+import { useDispatch, useSelector } from 'react-redux';
+import {
     deleteAllTodo,
-    filterTodos,
-}) => {
-    const [yourComplete, setYourComplete] = useState<string[]>([]);
+    deleteAllTodosComplete,
+} from '../../store/slices/todoSlice';
+import { RootState } from '../../store/store';
 
-    function deleteCompleted() {
-        if (yourComplete.length > 0) {
-            filterTodos(yourComplete);
-            setYourComplete([]);
-        }
-    }
+const TodoBlock: React.FC = () => {
+    const dispatch = useDispatch();
+    const todoList = useSelector(
+        (state: RootState) => state.sliceName.todoList
+    );
+    const lengthComplete = todoList.filter((el) => el.complete).length;
 
-    function addCompletedTodo(todo: string) {
-        setYourComplete((prevState) => {
-            const isTodoExists = prevState.includes(todo);
-            if (isTodoExists) {
-                return prevState.filter((el) => el !== todo);
-            } else {
-                return [...prevState, todo];
-            }
-        });
-    }
+    const deleteCompleted = () => {
+        dispatch(deleteAllTodosComplete());
+    };
 
     return (
         <div className={styles.blockContainer}>
             <div className={styles.blockButtons}>
                 <button
-                    onClick={() => deleteCompleted()}
+                    onClick={deleteCompleted}
                     className={styles.buttonBlock}
                     title="deleteCompleted"
                 >
@@ -51,7 +37,7 @@ const TodoBlock: React.FC<TodoBlockProps> = ({
                 </button>
                 <button
                     title="deleteAllTodo"
-                    onClick={deleteAllTodo}
+                    onClick={() => dispatch(deleteAllTodo())}
                     className={styles.buttonBlock}
                 >
                     <img
@@ -61,17 +47,12 @@ const TodoBlock: React.FC<TodoBlockProps> = ({
                     />
                 </button>
             </div>
-            {todoList.map((el) => (
-                <TodoElement
-                    key={el}
-                    data={el}
-                    addCompletedTodo={addCompletedTodo}
-                    filterTodos={filterTodos}
-                />
+            {todoList.map((el, i) => (
+                <TodoElement key={i} data={el.data} complete={el.complete} />
             ))}
-            {yourComplete.length > 0 && (
+            {lengthComplete > 0 && (
                 <p className={styles.paragraphBlock}>
-                    Your have completed {yourComplete.length} todos
+                    Your have completed {lengthComplete} todos
                 </p>
             )}
         </div>

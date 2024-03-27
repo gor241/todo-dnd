@@ -1,30 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import titleIcon from './icon.svg';
 import styles from './TodoElement.module.css';
+import { completeTodo, filterTodos } from '../../store/slices/todoSlice';
+import { useDispatch } from 'react-redux';
 
 interface TodoElementProps {
     data: string;
-    addCompletedTodo: (todo: string) => void;
-    filterTodos: (todo: string) => void;
+    complete: boolean;
 }
 
-export const TodoElement: React.FC<TodoElementProps> = ({
-    data,
-    addCompletedTodo,
-    filterTodos,
-}) => {
-    const [todoComplete, setTodoComplete] = useState(false);
-    function completeTodo() {
-        setTodoComplete(!todoComplete);
-        addCompletedTodo(data);
-    }
+export const TodoElement: React.FC<TodoElementProps> = ({ data, complete }) => {
+    const dispatch = useDispatch();
 
     function deleteTodo() {
-        filterTodos(data);
+        dispatch(filterTodos(data));
     }
     return (
-        <div className={!todoComplete ? styles.container : styles.completed}>
+        <div className={!complete ? styles.container : styles.completed}>
             <img src={titleIcon} alt="icon" />
             <p>{data}</p>
             <button title="deleteTodo" onClick={deleteTodo}>
@@ -77,7 +70,10 @@ export const TodoElement: React.FC<TodoElementProps> = ({
                     />
                 </svg>
             </button>
-            <button title="completeTodo" onClick={completeTodo}>
+            <button
+                title="completeTodo"
+                onClick={() => dispatch(completeTodo(data))}
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 50 50"
