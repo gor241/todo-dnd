@@ -42,6 +42,19 @@ const todoSlice = createSlice({
                 state.todoList[todoIndex].complete = true;
             }
         },
+        moveTodoItem: (
+            state,
+            action: PayloadAction<{
+                draggableId: string;
+                sourceIndex: number;
+                destinationIndex: number;
+            }>
+        ) => {
+            const { sourceIndex, destinationIndex } = action.payload;
+            const itemToMove = state.todoList[sourceIndex];
+            state.todoList.splice(sourceIndex, 1);
+            state.todoList.splice(destinationIndex, 0, itemToMove);
+        },
     },
 });
 
@@ -52,5 +65,6 @@ export const {
     filterTodos,
     completeTodo,
     deleteAllTodosComplete,
+    moveTodoItem,
 } = todoSlice.actions;
 export default todoSlice.reducer;
