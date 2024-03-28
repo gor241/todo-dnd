@@ -36,3 +36,15 @@
 .paragraphBlock {
     color: white;
 }
+
+.chatacters {
+    list-style: none;
+    padding-left: 0;
+}
+
+.chatacters li {
+    display: flex;
+    align-items: center;
+    border-radius: 0.2em;
+    margin-bottom: 1em;
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './TodoBlock.module.css';
 import basketIcon from './basket.svg';
 import updateIcon from './update.svg';
@@ -7,8 +7,35 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     deleteAllTodo,
     deleteAllTodosComplete,
+    moveTodoItem,
 } from '../../store/slices/todoSlice';
 import { RootState } from '../../store/store';
+import {
+    DragDropContext,
+    Draggable,
+    Droppable,
+    DroppableProps,
+} from 'react-beautiful-dnd';
+
+// Компонент для создания перетаскивания
+const StrictModeDroppable = ({ children, ...props }: DroppableProps) => {
+    const [enabled, setEnabled] = useState(false);
+
+    useEffect(() => {
+        const animation = requestAnimationFrame(() => setEnabled(true));
+
+        return () => {
+            cancelAnimationFrame(animation);
+            setEnabled(false);
+        };
+    }, []);
+
+    if (!enabled) {
+        return null;
+    }
+
+    return <Droppable {...props}>{children}</Droppable>;
+};
 
 const TodoBlock: React.FC = () => {
     const dispatch = useDispatch();
@@ -19,6 +46,29 @@ const TodoBlock: React.FC = () => {
 
     const deleteCompleted = () => {
         dispatch(deleteAllTodosComplete());
+    };
+
+    const onDragEnd = (result: any) => {
+        const { destination, source, draggableId } = result;
+
+        if (!destination) {
+            return;
+        }
+
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        dispatch(
+            moveTodoItem({
+                draggableId: draggableId,
+                sourceIndex: source.index,
+                destinationIndex: destination.index,
+            })
+        );
     };
 
     return (
@@ -47,12 +97,42 @@ const TodoBlock: React.FC = () => {
                     />
                 </button>
             </div>
-            {todoList.map((el, i) => (
-                <TodoElement key={i} data={el.data} complete={el.complete} />
-            ))}
+            <DragDropContext onDragEnd={onDragEnd}>
+                <StrictModeDroppable droppableId="chatacters">
+                    {(provided) => (
+                        <ul
+                            className={styles.chatacters}
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                        >
+                            {todoList.map((el, i) => (
+                                <Draggable
+                                    key={el.data}
+                                    draggableId={el.data + i}
+                                    index={i}
+                                >
+                                    {(provided) => (
+                                        <li
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            ref={provided.innerRef}
+                                        >
+                                            <TodoElement
+                                                data={el.data}
+                                                complete={el.complete}
+                                            />
+                                        </li>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </ul>
+                    )}
+                </StrictModeDroppable>
+            </DragDropContext>
             {lengthComplete > 0 && (
                 <p className={styles.paragraphBlock}>
-                    Your have completed {lengthComplete} todos
+                    You have completed {lengthComplete} todos
                 </p>
             )}
         </div>
